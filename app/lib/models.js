@@ -48,12 +48,12 @@ const productSchema = new mongoose.Schema({
         required:true,
     },
     price:{
-        type:number,
+        type:Number,
         required:true,
         min:0,
     },
     stock:{
-        type:number,
+        type:Number,
         required:true,
         min:0,
     },
@@ -71,4 +71,4 @@ const productSchema = new mongoose.Schema({
 
 
 export const User = mongoose.models.User || mongoose.model("User",userSchema)
-export const Product = mongoose.models.Product || mongoose.model("Product",userSchema)
+export const Product = mongoose.models.Product || mongoose.model("Product",productSchema)
