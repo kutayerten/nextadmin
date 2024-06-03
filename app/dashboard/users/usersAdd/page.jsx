@@ -15,7 +15,7 @@ const usersAdd = () => {
           <option value={false}>No</option>
         </select>
         <select name="isActive" id="isActive">
-          <option value={true} >Is Admin ?</option>
+          <option value={true} >Is Active ?</option>
           <option value={true}>Yes</option>
           <option value={false}>No</option>
         </select>
