@@ -5,6 +5,7 @@ import { Product, User } from "./models";
 import { connectToDB } from "./utils";
 import { redirect } from "next/navigation";
 import bcrypt from "bcrypt";
+import { signIn } from "../auth";
 
 
 export const addUser = async (formData) => {
@@ -59,6 +60,42 @@ export const updateUser = async (formData) => {
     redirect("/dashboard/users");
 };
 
+export const updateProduct = async (formData) => {
+ 
+    const { id,title,
+        price,
+        stock,
+        img,
+        color,
+        size,
+        desc} = Object.fromEntries(formData);
+
+    try{
+        connectToDB();
+        const updateFields = {
+            title,
+            price,
+            stock,
+            img,
+            color,
+            size,
+            desc
+        }
+        Object.keys(updateFields).forEach(
+            (key)=> 
+                (updateFields[key] === "" || undefined) && delete updateFields[key]
+            );
+
+            await Product.findByIdAndUpdate(id,updateFields);
+
+    }catch(err){
+        console.log(err);
+        throw new Error("Failed to create Product!");
+    }
+    revalidatePath("/dashboard/products");
+    redirect("/dashboard/products");
+};
+
 
 
 export const addProduct = async (formData) => {
@@ -111,4 +148,16 @@ export const deleteUser = async (formData) => {
         throw new Error("Falied to delete product");
     }
     revalidatePath("/dashboard/products");
-}
+};
+
+
+export const authenticate = async (formData) => {
+    const { username , password } = Object.fromEntries(formData);
+
+    try{
+        await signIn("credentials", { username , password });
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
